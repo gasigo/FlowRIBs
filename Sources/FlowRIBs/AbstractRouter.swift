@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 open class AbstractRouter<Dependency>: Router {
@@ -60,5 +61,9 @@ public extension AbstractRouter {
 		loadFunctions.insert({ context.present(view) }, at: .zero)
 		unloadFunctions.append { context.dismiss(view, animated: animated, completion: nil) }
 		return self
+	}
+	
+	func presenting<Target: View>(view: Target, using context: PresentationContext, animated: Bool = true) -> Self {
+		presenting(view: UIHostingController(rootView: view), using: context, animated: animated)
 	}
 }
