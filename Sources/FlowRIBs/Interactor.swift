@@ -4,3 +4,7 @@ public protocol Interactor: AnyObject {
 	func start(router: Router)
 	func stop()
 }
+
+public extension Interactor {
+	func stop() {}
+}
