@@ -8,7 +8,8 @@ open class AbstractRouter<Dependency>: Router {
 	private var loadFunctions: [Completion] = []
 	private var unloadFunctions: [Completion] = []
 	private var children: [ChildIdentifier: Router] = [:]
-	
+	private var services: [Service] = []
+
 	public init(dependency: Dependency) {
 		self.dependency = dependency
 	}
@@ -22,6 +23,7 @@ open class AbstractRouter<Dependency>: Router {
 	}
 	
 	public func load() {
+		services.forEach { $0.start(router: self) }
 		loadFunctions.forEach { $0() }
 		didLoad()
 	}
@@ -29,6 +31,9 @@ open class AbstractRouter<Dependency>: Router {
 	public func unload() {
 		unloadFunctions.forEach { $0() }
 		didUnload()
+		detachAll()
+		services.forEach { $0.stop() }
+		services.removeAll()
 	}
 	
 	public func attach(child: Router, identifier: ChildIdentifier) {
@@ -65,5 +70,10 @@ public extension AbstractRouter {
 	
 	func presenting<Target: View>(view: Target, using context: PresentationContext, animated: Bool = true) -> Self {
 		presenting(view: UIHostingController(rootView: view), using: context, animated: animated)
+	}
+	
+	func registering(services: [Service]) -> Self {
+		self.services += services
+		return self
 	}
 }
