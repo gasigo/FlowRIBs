@@ -12,7 +12,7 @@ extension PresentationContexts {
 		
 		public func present(_ view: UIViewController, animated: Bool, completion: Completion?) {
 			navigationController.setViewControllers([view], animated: animated)
-			completion?()
+			embeddedContext.present(navigationController, animated: animated, completion: completion)
 		}
 		
 		public func dismiss(_ view: UIViewController, animated: Bool, completion: Completion?) {
