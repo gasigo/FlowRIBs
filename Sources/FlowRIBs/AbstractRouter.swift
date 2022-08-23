@@ -23,14 +23,14 @@ open class AbstractRouter<Dependency>: Router {
 	}
 	
 	public func load() {
+		didLoad()
 		services.forEach { $0.start(router: self) }
 		loadFunctions.forEach { $0() }
-		didLoad()
 	}
 	
 	public func unload() {
-		unloadFunctions.forEach { $0() }
 		didUnload()
+		unloadFunctions.forEach { $0() }
 		detachAll()
 		services.forEach { $0.stop() }
 		services.removeAll()
