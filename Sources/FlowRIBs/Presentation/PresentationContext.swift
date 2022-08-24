@@ -33,3 +33,10 @@ public extension PresentationContext {
 }
 
 public enum PresentationContexts {}
+
+final class HostingController<Content: View>: UIHostingController<Content> {
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		navigationController?.setNavigationBarHidden(true, animated: false)
+	}
+}
